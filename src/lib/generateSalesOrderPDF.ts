@@ -194,7 +194,7 @@ export async function generateSalesOrderPDF(order: SalesOrderData) {
       doc.setTextColor(0, 0, 0);
       doc.text("Total Amount", pageWidth - 80, finalY);
       doc.text(
-        `RS  ${order.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+        `LKR  ${order.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
         pageWidth - marginRight,
         finalY,
         { align: "right" }
