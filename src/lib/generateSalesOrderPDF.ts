@@ -86,7 +86,7 @@ export function generateSalesOrderPDF(order: SalesOrderData) {
     item.remarks || "",
   ]);
 
-  autoTable(doc, {
+  (doc as any).autoTable({
     startY: tableStartY,
     head: tableHeaders,
     body: tableData,
