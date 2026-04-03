@@ -26,6 +26,13 @@ interface Customer {
   name: string;
 }
 
+interface InventoryItem {
+  id: string;
+  styleCode: string;
+  description: string;
+  price: number;
+}
+
 export default function Invoices() {
   const [showStyleForm, setShowStyleForm] = useState(false);
   const [newStyleCode, setNewStyleCode] = useState("");
