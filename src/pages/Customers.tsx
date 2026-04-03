@@ -38,6 +38,7 @@ export default function Customers() {
   const [filterActive, setFilterActive] = useState<"all" | "active" | "inactive">("all");
   const [form, setForm] = useState({ name: "", email: "", address: "", telephone: "", branches: [] as string[] });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [invoiceHistoryCustomer, setInvoiceHistoryCustomer] = useState<Customer | null>(null);
 
   useEffect(() => {
     const customersRef = ref(db, "customers");
