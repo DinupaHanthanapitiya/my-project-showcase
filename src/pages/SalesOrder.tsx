@@ -72,8 +72,8 @@ export default function SalesOrder() {
     });
   }, []);
 
-  const handleDownloadPDF = (order: SalesOrder) => {
-    generateSalesOrderPDF({
+  const handleDownloadPDF = async (order: SalesOrder) => {
+    await generateSalesOrderPDF({
       orderNumber: order.orderNumber,
       invoiceNumber: order.invoiceNumber || "",
       customerName: order.customerName,
