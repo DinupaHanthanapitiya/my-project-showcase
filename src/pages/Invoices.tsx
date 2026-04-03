@@ -166,7 +166,7 @@ export default function Invoices() {
       });
       toast.success("Invoice created");
       navigate("/");
-    } catch { toast.error("Failed to create invoice"); }
+    } catch (err) { console.error("Invoice create error:", err); toast.error("Failed to create invoice"); }
   };
 
   return (
