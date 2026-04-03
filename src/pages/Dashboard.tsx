@@ -133,7 +133,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Outstanding Balance</p>
-                  <p className="text-2xl font-bold text-destructive">Rs. {outstandingBalance.toLocaleString()}</p>
+                  <p className="text-2xl font-bold text-destructive"><p className="text-2xl font-bold text-destructive">LKR {outstandingBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p></p>
                   <p className="text-xs text-muted-foreground">{Math.floor(Math.random() * 15)} overdue accounts</p>
                 </div>
                 <CreditCard className="h-5 w-5 text-muted-foreground" />
