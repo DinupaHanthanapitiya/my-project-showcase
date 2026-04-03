@@ -80,6 +80,19 @@ export default function Invoices() {
         setCustomers(Object.entries(data).map(([id, val]: [string, any]) => ({ id, name: val.name || "" })));
       }
     });
+
+    const inventoryRef = ref(db, "inventory");
+    onValue(inventoryRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setInventoryItems(Object.entries(data).map(([id, val]: [string, any]) => ({
+          id,
+          styleCode: val.styleCode || val.itemCode || "",
+          description: val.description || val.name || "",
+          price: Number(val.price || val.unitPrice || 0),
+        })));
+      }
+    });
   }, []);
 
   const handleParseBulk = () => {
