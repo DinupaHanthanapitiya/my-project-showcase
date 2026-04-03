@@ -209,7 +209,7 @@ export default function Dashboard() {
                         <p className="text-xs text-muted-foreground">{activity.time}</p>
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-primary">Rs. {activity.amount.toLocaleString()}</span>
+                    <span className="text-sm font-medium text-primary"><span className="text-sm font-medium text-primary">LKR {activity.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></span>
                   </div>
                 ))}
               </div>

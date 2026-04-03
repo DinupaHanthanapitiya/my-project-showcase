@@ -175,8 +175,8 @@ export default function InvoiceHistoryDialog({ open, onOpenChange, customerName,
                               <div key={idx} className="flex items-center justify-between py-1.5 px-2 bg-muted/30 rounded text-sm">
                                 <span className="font-medium">{itemName}</span>
                                 <span className="flex items-center gap-2 text-muted-foreground">
-                                  Qty: {qty} &nbsp;@ Rs. {price.toLocaleString()} &nbsp;
-                                  <span className="font-semibold text-foreground">Rs. {Number(itemTotal).toLocaleString("en-IN")}</span>
+                                  Qty: {qty} &nbsp;@ LKR {price.toLocaleString("en-US")} &nbsp;
+                                  <span className="font-semibold text-foreground">LKR {Number(itemTotal).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
                                 </span>
                               </div>
                             );

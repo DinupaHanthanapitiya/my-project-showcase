@@ -117,7 +117,7 @@ export default function Inventory() {
                     <TableCell className="font-medium">{item.styleNo}</TableCell>
                     <TableCell>{item.itemName}</TableCell>
                     <TableCell>{item.description}</TableCell>
-                    <TableCell>Rs. {item.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell>
+                    <TableCell><TableCell>LKR {item.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell></TableCell>
                     <TableCell><span className={item.stock <= 5 ? "text-primary font-bold" : ""}>{item.stock} units</span></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">

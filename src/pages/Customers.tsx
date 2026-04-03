@@ -365,7 +365,7 @@ export default function Customers() {
                                     {customer.pendingInvoices.map((inv: any, i: number) => (
                                       <div key={i} className="flex items-center justify-between text-sm bg-background rounded px-2 py-1">
                                         <span>{inv.number} | Due: {inv.dueDate}</span>
-                                        <span className="text-primary font-medium">Rs. {Number(inv.amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                                        <span className="text-primary font-medium"><span className="text-primary font-medium">LKR {Number(inv.amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></span>
                                       </div>
                                     ))}
                                   </div>
