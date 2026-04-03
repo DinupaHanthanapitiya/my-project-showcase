@@ -229,7 +229,24 @@ export default function Invoices() {
               <TableBody>
                 {items.map((item, i) => (
                   <TableRow key={i}>
-                    <TableCell><Select><SelectTrigger className="w-28"><SelectValue placeholder="Select item" /></SelectTrigger><SelectContent><SelectItem value="none">None</SelectItem></SelectContent></Select></TableCell>
+                    <TableCell>
+                      <Select onValueChange={(val) => {
+                        if (val === "none") return;
+                        const inv = inventoryItems.find(it => it.id === val);
+                        if (inv) {
+                          const newItems = [...items];
+                          newItems[i] = { ...newItems[i], itemCode: inv.styleCode, description: inv.description, price: inv.price, total: newItems[i].quantity * inv.price };
+                          setItems(newItems);
+                        }
+                      }}>
+                        <SelectTrigger className="w-40"><SelectValue placeholder="Select item" /></SelectTrigger>
+                        <SelectContent>
+                          {inventoryItems.map((inv) => (
+                            <SelectItem key={inv.id} value={inv.id}>{inv.styleCode} - LKR {inv.price.toLocaleString("en-US")}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
                     <TableCell><Input value={item.itemCode} onChange={(e) => updateItem(i, "itemCode", e.target.value)} className="w-20" /></TableCell>
                     <TableCell><Input placeholder="Item description" value={item.description} onChange={(e) => updateItem(i, "description", e.target.value)} /></TableCell>
                     <TableCell><Input type="number" value={item.quantity || ""} onChange={(e) => updateItem(i, "quantity", Number(e.target.value))} className="w-20" /></TableCell>
