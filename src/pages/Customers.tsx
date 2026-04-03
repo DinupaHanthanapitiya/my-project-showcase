@@ -77,7 +77,7 @@ export default function Customers() {
 
       const list = Object.entries(customersData).map(([id, val]: [string, any]) => {
         const custName = (val.name || "").toLowerCase().trim();
-        const invoiceInfo = invoicesByCustomer[custName] || { total: 0, invoices: [] };
+        const invoiceInfo = invoicesByCustomer[custName] || { total: 0, invoices: [], allInvoices: [] };
         return {
           id,
           name: val.name || "",
@@ -88,6 +88,7 @@ export default function Customers() {
           isActive: val.isActive !== false,
           outstandingBalance: invoiceInfo.total,
           pendingInvoices: invoiceInfo.invoices,
+          allInvoices: invoiceInfo.allInvoices,
         };
       });
       setCustomers(list);
