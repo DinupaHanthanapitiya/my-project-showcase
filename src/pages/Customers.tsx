@@ -222,7 +222,7 @@ export default function Customers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Outstanding</p>
-                  <p className="text-2xl font-bold text-primary">Rs. {totalOutstanding.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
+                  <p className="text-2xl font-bold text-primary"><p className="text-2xl font-bold text-primary">LKR {totalOutstanding.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p></p>
                   <p className="text-xs text-muted-foreground">{customers.filter(c => c.outstandingBalance > 0).length} accounts with balance</p>
                 </div>
                 <CreditCard className="h-5 w-5 text-muted-foreground" />
