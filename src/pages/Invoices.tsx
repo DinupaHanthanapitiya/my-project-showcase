@@ -201,7 +201,7 @@ export default function Invoices() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Quick Select</TableHead><TableHead>Item Code *</TableHead><TableHead>Description *</TableHead>
-                  <TableHead>Quantity *</TableHead><TableHead>Branch</TableHead><TableHead>Price (RS) *</TableHead>
+                  <TableHead>Quantity *</TableHead><TableHead>Branch</TableHead><TableHead>Price (LKR) *</TableHead>
                   <TableHead>Total</TableHead><TableHead></TableHead>
                 </TableRow>
               </TableHeader>
