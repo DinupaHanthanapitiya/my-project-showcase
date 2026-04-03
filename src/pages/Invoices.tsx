@@ -179,8 +179,8 @@ export default function Invoices() {
           <Card>
             <CardHeader><CardTitle>Invoice Summary</CardTitle><p className="text-sm text-muted-foreground">Total amounts and payment details</p></CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal:</span><span className="text-primary font-medium">RS {subtotal.toLocaleString()}</span></div>
-              <div className="flex justify-between border-t pt-2"><span className="font-bold">Total:</span><span className="font-bold text-lg">RS {subtotal.toLocaleString()}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal:</span><span className="text-primary font-medium">LKR {subtotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></div>
+              <div className="flex justify-between border-t pt-2"><span className="font-bold">Total:</span><span className="font-bold text-lg">LKR {subtotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></div>
             </CardContent>
           </Card>
         </div>
