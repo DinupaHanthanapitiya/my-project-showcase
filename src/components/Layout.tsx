@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { auth, signOut } from "@/lib/firebase";
 import { toast } from "sonner";
+import sevinroLogo from "@/assets/sevinro-logo.png";
 
 const navItems = [
   { label: "Dashboard", path: "/" },
