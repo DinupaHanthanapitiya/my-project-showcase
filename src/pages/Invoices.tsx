@@ -26,6 +26,7 @@ interface Customer {
   name: string;
 }
 
+export default function Invoices() {
   const [showStyleForm, setShowStyleForm] = useState(false);
   const [newStyleCode, setNewStyleCode] = useState("");
   const [newStyleDesc, setNewStyleDesc] = useState("");
@@ -41,7 +42,6 @@ interface Customer {
     toast.success("Style code added");
   };
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
