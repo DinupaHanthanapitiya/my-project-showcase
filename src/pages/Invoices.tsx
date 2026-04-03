@@ -34,6 +34,10 @@ export default function Invoices() {
   const [branch, setBranch] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [items, setItems] = useState<InvoiceItem[]>([{ itemCode: "AU001", description: "", quantity: 0, branch: "Branch 1", price: 0, total: 0 }]);
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [bulkParsedItems, setBulkParsedItems] = useState<InvoiceItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
