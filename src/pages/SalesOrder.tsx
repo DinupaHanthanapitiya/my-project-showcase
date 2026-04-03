@@ -114,7 +114,7 @@ export default function SalesOrder() {
                       </div>
                       <p className="text-sm text-muted-foreground">Customer: {order.customerName}</p>
                       <p className="text-sm text-muted-foreground">Order Date: {order.orderDate} &nbsp; Delivery: {order.deliveryDate}</p>
-                      <p className="text-sm">Items: {order.itemCount} items · <span className="text-primary font-medium">RS {order.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></p>
+                      <p className="text-sm">Items: {order.itemCount} items · <span className="text-primary font-medium"><p className="text-sm">Items: {order.itemCount} items · <span className="text-primary font-medium">LKR {order.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></p></span></p>
                       {order.notes && <p className="text-sm text-muted-foreground">Notes: {order.notes}</p>}
                     </div>
                     <Button variant="outline" size="sm" onClick={() => handleDownloadPDF(order)}>
