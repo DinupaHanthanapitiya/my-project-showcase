@@ -220,6 +220,26 @@ export default function Invoices() {
                 ))}
               </TableBody>
             </Table>
+            {showStyleForm && (
+              <div className="mt-4 rounded-md border bg-muted/30 p-4">
+                <p className="font-semibold mb-3">Add New Style Code</p>
+                <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-3 items-end">
+                  <div className="space-y-1">
+                    <Label>Code *</Label>
+                    <Input placeholder="e.g., AU001" value={newStyleCode} onChange={(e) => setNewStyleCode(e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Description *</Label>
+                    <Input placeholder="e.g., T Shirt" value={newStyleDesc} onChange={(e) => setNewStyleDesc(e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Price (RS) *</Label>
+                    <Input type="number" placeholder="0.00" value={newStylePrice} onChange={(e) => setNewStylePrice(e.target.value)} />
+                  </div>
+                  <Button onClick={handleAddStyleCode} className="bg-orange-500 hover:bg-orange-600 text-white px-8">Add Code</Button>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
