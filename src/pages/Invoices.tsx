@@ -26,6 +26,13 @@ interface Customer {
   name: string;
 }
 
+interface InventoryItem {
+  id: string;
+  styleCode: string;
+  description: string;
+  price: number;
+}
+
 export default function Invoices() {
   const [showStyleForm, setShowStyleForm] = useState(false);
   const [newStyleCode, setNewStyleCode] = useState("");
@@ -43,6 +50,7 @@ export default function Invoices() {
   };
 
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
@@ -70,6 +78,19 @@ export default function Invoices() {
       const data = snapshot.val();
       if (data) {
         setCustomers(Object.entries(data).map(([id, val]: [string, any]) => ({ id, name: val.name || "" })));
+      }
+    });
+
+    const inventoryRef = ref(db, "inventory");
+    onValue(inventoryRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setInventoryItems(Object.entries(data).map(([id, val]: [string, any]) => ({
+          id,
+          styleCode: val.styleCode || val.itemCode || "",
+          description: val.description || val.name || "",
+          price: Number(val.price || val.unitPrice || 0),
+        })));
       }
     });
   }, []);
@@ -208,7 +229,24 @@ export default function Invoices() {
               <TableBody>
                 {items.map((item, i) => (
                   <TableRow key={i}>
-                    <TableCell><Select><SelectTrigger className="w-28"><SelectValue placeholder="Select item" /></SelectTrigger><SelectContent><SelectItem value="none">None</SelectItem></SelectContent></Select></TableCell>
+                    <TableCell>
+                      <Select onValueChange={(val) => {
+                        if (val === "none") return;
+                        const inv = inventoryItems.find(it => it.id === val);
+                        if (inv) {
+                          const newItems = [...items];
+                          newItems[i] = { ...newItems[i], itemCode: inv.styleCode, description: inv.description, price: inv.price, total: newItems[i].quantity * inv.price };
+                          setItems(newItems);
+                        }
+                      }}>
+                        <SelectTrigger className="w-40"><SelectValue placeholder="Select item" /></SelectTrigger>
+                        <SelectContent>
+                          {inventoryItems.map((inv) => (
+                            <SelectItem key={inv.id} value={inv.id}>{inv.styleCode} - LKR {inv.price.toLocaleString("en-US")}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
                     <TableCell><Input value={item.itemCode} onChange={(e) => updateItem(i, "itemCode", e.target.value)} className="w-20" /></TableCell>
                     <TableCell><Input placeholder="Item description" value={item.description} onChange={(e) => updateItem(i, "description", e.target.value)} /></TableCell>
                     <TableCell><Input type="number" value={item.quantity || ""} onChange={(e) => updateItem(i, "quantity", Number(e.target.value))} className="w-20" /></TableCell>
