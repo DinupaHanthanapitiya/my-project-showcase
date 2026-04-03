@@ -26,7 +26,21 @@ interface Customer {
   name: string;
 }
 
-export default function Invoices() {
+  const [showStyleForm, setShowStyleForm] = useState(false);
+  const [newStyleCode, setNewStyleCode] = useState("");
+  const [newStyleDesc, setNewStyleDesc] = useState("");
+  const [newStylePrice, setNewStylePrice] = useState("");
+
+  const handleAddStyleCode = () => {
+    if (!newStyleCode || !newStyleDesc) { toast.error("Code and Description are required"); return; }
+    const price = Number(newStylePrice) || 0;
+    const nonEmpty = items.filter(i => i.itemCode || i.description);
+    setItems([...nonEmpty, { itemCode: newStyleCode, description: newStyleDesc, quantity: 1, branch: "Branch 1", price, total: price }]);
+    setNewStyleCode(""); setNewStyleDesc(""); setNewStylePrice("");
+    setShowStyleForm(false);
+    toast.success("Style code added");
+  };
+
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
