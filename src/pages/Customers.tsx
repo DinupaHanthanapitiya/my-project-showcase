@@ -455,6 +455,14 @@ export default function Customers() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Invoice History Dialog */}
+      <InvoiceHistoryDialog
+        open={!!invoiceHistoryCustomer}
+        onOpenChange={(open) => { if (!open) setInvoiceHistoryCustomer(null); }}
+        customerName={invoiceHistoryCustomer?.name || ""}
+        invoices={invoiceHistoryCustomer?.allInvoices || []}
+      />
     </Layout>
   );
 }
