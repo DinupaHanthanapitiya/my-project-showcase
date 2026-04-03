@@ -212,6 +212,44 @@ export default function Invoices() {
           <Button variant="outline" onClick={() => navigate("/")}>Cancel</Button>
           <Button onClick={handleCreate}>Create Invoice</Button>
         </div>
+
+        <Dialog open={bulkOpen} onOpenChange={setBulkOpen}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Bulk Import Invoice Items</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 rounded-md border p-3">
+                <FileSpreadsheet className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Upload a CSV or Excel file with columns: Style No, Description, Unit Price. The system will intelligently detect column names regardless of format.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label>Select File</Label>
+                <div className="flex gap-2">
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv,.txt"
+                    onChange={(e) => { setBulkFile(e.target.files?.[0] || null); setBulkParsedItems([]); }}
+                    className="flex-1"
+                  />
+                  <Button variant="outline" onClick={handleParseBulk} disabled={!bulkFile}>
+                    <Upload className="h-4 w-4 mr-1" /> Parse
+                  </Button>
+                </div>
+              </div>
+              {bulkParsedItems.length > 0 && (
+                <p className="text-sm text-primary font-medium">{bulkParsedItems.length} items ready to import</p>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => { setBulkOpen(false); setBulkFile(null); setBulkParsedItems([]); }}>Cancel</Button>
+              <Button onClick={handleImportItems} disabled={bulkParsedItems.length === 0} className="bg-orange-400 hover:bg-orange-500 text-white">Import Items</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );
