@@ -23,6 +23,7 @@ interface Customer {
   isActive: boolean;
   outstandingBalance: number;
   pendingInvoices: any[];
+  allInvoices: any[];
 }
 
 const branchOptions = ["Branch 1", "Branch 2", "Branch 3", "Branch 4", "Branch 5", "Branch 6"];
