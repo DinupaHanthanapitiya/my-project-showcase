@@ -12,6 +12,7 @@ import { db, ref, onValue, push, set, update, remove } from "@/lib/firebase";
 import { Plus, Users, UserCheck, CreditCard, Search, Pencil, Trash2, Eye, EyeOff, Phone, Mail, MapPin, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
+import InvoiceHistoryDialog from "@/components/InvoiceHistoryDialog";
 
 interface Customer {
   id: string;
