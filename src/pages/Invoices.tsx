@@ -191,7 +191,7 @@ export default function Invoices() {
               <div><CardTitle>Invoice Items</CardTitle><p className="text-sm text-muted-foreground">Add products and services</p></div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={() => setBulkOpen(true)}><Upload className="h-4 w-4 mr-1" /> Bulk Import</Button>
-                <Button variant="outline" size="sm">Add Item Code</Button>
+                <Button variant="outline" size="sm" onClick={() => setShowStyleForm(!showStyleForm)}><Plus className="h-4 w-4 mr-1" /> Add Item Code</Button>
                 <Button variant="outline" size="sm" onClick={addItem}><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
               </div>
             </div>
