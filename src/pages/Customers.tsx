@@ -222,7 +222,7 @@ export default function Customers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Outstanding</p>
-                  <p className="text-2xl font-bold text-primary">Rs. {totalOutstanding.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
+                  <p className="text-2xl font-bold text-primary"><p className="text-2xl font-bold text-primary">LKR {totalOutstanding.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p></p>
                   <p className="text-xs text-muted-foreground">{customers.filter(c => c.outstandingBalance > 0).length} accounts with balance</p>
                 </div>
                 <CreditCard className="h-5 w-5 text-muted-foreground" />
@@ -314,7 +314,7 @@ export default function Customers() {
                         </TableCell>
                         <TableCell className="text-right">
                           <p className={`font-semibold ${customer.outstandingBalance > 0 ? "text-primary" : "text-foreground"}`}>
-                            Rs. {customer.outstandingBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                            LKR {customer.outstandingBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                           </p>
                           {customer.pendingInvoices.length > 0 && (
                             <p className="text-xs text-muted-foreground">{customer.pendingInvoices.length} pending</p>
@@ -365,7 +365,7 @@ export default function Customers() {
                                     {customer.pendingInvoices.map((inv: any, i: number) => (
                                       <div key={i} className="flex items-center justify-between text-sm bg-background rounded px-2 py-1">
                                         <span>{inv.number} | Due: {inv.dueDate}</span>
-                                        <span className="text-primary font-medium">Rs. {Number(inv.amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                                        <span className="text-primary font-medium"><span className="text-primary font-medium">LKR {Number(inv.amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></span>
                                       </div>
                                     ))}
                                   </div>

@@ -86,7 +86,7 @@ export default function Inventory() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card><CardContent className="pt-6"><div className="flex items-center justify-between"><div><p className="text-sm text-muted-foreground">Total Items</p><p className="text-2xl font-bold">{totalItems}</p><p className="text-xs text-muted-foreground">Different fabric types</p></div><Package className="h-5 w-5 text-muted-foreground" /></div></CardContent></Card>
           <Card className="border-primary"><CardContent className="pt-6"><div className="flex items-center justify-between"><div><p className="text-sm text-muted-foreground">Low Stock Items</p><p className="text-2xl font-bold">{lowStock}</p></div><AlertTriangle className="h-5 w-5 text-primary" /></div></CardContent></Card>
-          <Card><CardContent className="pt-6"><div className="flex items-center justify-between"><div><p className="text-sm text-primary">Total Value</p><p className="text-2xl font-bold text-primary">Rs. {totalValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p><p className="text-xs text-muted-foreground">Current inventory value</p></div><Package className="h-5 w-5 text-muted-foreground" /></div></CardContent></Card>
+          <Card><CardContent className="pt-6"><div className="flex items-center justify-between"><div><p className="text-sm text-primary">Total Value</p><p className="text-2xl font-bold text-primary"><Card><CardContent className="pt-6"><div className="flex items-center justify-between"><div><p className="text-sm text-primary">Total Value</p><p className="text-2xl font-bold text-primary">LKR {totalValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p><p className="text-xs text-muted-foreground">Current inventory value</p></div><Package className="h-5 w-5 text-muted-foreground" /></div></CardContent></Card></p><p className="text-xs text-muted-foreground">Current inventory value</p></div><Package className="h-5 w-5 text-muted-foreground" /></div></CardContent></Card>
         </div>
 
         <Card>
@@ -117,7 +117,7 @@ export default function Inventory() {
                     <TableCell className="font-medium">{item.styleNo}</TableCell>
                     <TableCell>{item.itemName}</TableCell>
                     <TableCell>{item.description}</TableCell>
-                    <TableCell>Rs. {item.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell>
+                    <TableCell><TableCell>LKR {item.unitPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell></TableCell>
                     <TableCell><span className={item.stock <= 5 ? "text-primary font-bold" : ""}>{item.stock} units</span></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">

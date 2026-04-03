@@ -179,8 +179,8 @@ export default function Invoices() {
           <Card>
             <CardHeader><CardTitle>Invoice Summary</CardTitle><p className="text-sm text-muted-foreground">Total amounts and payment details</p></CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal:</span><span className="text-primary font-medium">RS {subtotal.toLocaleString()}</span></div>
-              <div className="flex justify-between border-t pt-2"><span className="font-bold">Total:</span><span className="font-bold text-lg">RS {subtotal.toLocaleString()}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal:</span><span className="text-primary font-medium">LKR {subtotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></div>
+              <div className="flex justify-between border-t pt-2"><span className="font-bold">Total:</span><span className="font-bold text-lg">LKR {subtotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span></div>
             </CardContent>
           </Card>
         </div>
@@ -201,7 +201,7 @@ export default function Invoices() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Quick Select</TableHead><TableHead>Item Code *</TableHead><TableHead>Description *</TableHead>
-                  <TableHead>Quantity *</TableHead><TableHead>Branch</TableHead><TableHead>Price (RS) *</TableHead>
+                  <TableHead>Quantity *</TableHead><TableHead>Branch</TableHead><TableHead>Price (LKR) *</TableHead>
                   <TableHead>Total</TableHead><TableHead></TableHead>
                 </TableRow>
               </TableHeader>
@@ -214,7 +214,7 @@ export default function Invoices() {
                     <TableCell><Input type="number" value={item.quantity || ""} onChange={(e) => updateItem(i, "quantity", Number(e.target.value))} className="w-20" /></TableCell>
                     <TableCell><Input value={item.branch} onChange={(e) => updateItem(i, "branch", e.target.value)} className="w-24" /></TableCell>
                     <TableCell><Input type="number" value={item.price || ""} onChange={(e) => updateItem(i, "price", Number(e.target.value))} className="w-24" /></TableCell>
-                    <TableCell className="font-medium">RS {item.total.toLocaleString()}</TableCell>
+                    <TableCell className="font-medium">LKR {item.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell>
                     <TableCell><Button variant="ghost" size="icon" onClick={() => removeItem(i)}><Trash2 className="h-4 w-4" /></Button></TableCell>
                   </TableRow>
                 ))}
@@ -233,7 +233,7 @@ export default function Invoices() {
                     <Input placeholder="e.g., T Shirt" value={newStyleDesc} onChange={(e) => setNewStyleDesc(e.target.value)} />
                   </div>
                   <div className="space-y-1">
-                    <Label>Price (RS) *</Label>
+                    <Label>Price (LKR) *</Label>
                     <Input type="number" placeholder="0.00" value={newStylePrice} onChange={(e) => setNewStylePrice(e.target.value)} />
                   </div>
                   <Button onClick={handleAddStyleCode} className="bg-orange-500 hover:bg-orange-600 text-white px-8">Add Code</Button>
