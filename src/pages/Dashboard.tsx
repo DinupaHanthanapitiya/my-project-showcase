@@ -121,7 +121,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-2xl font-bold">Rs. {totalRevenue.toLocaleString()}</p>
+                  <p className="text-2xl font-bold"><p className="text-2xl font-bold">LKR {totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p></p>
                   <p className="text-xs text-muted-foreground">+15.3% from last month</p>
                 </div>
                 <DollarSign className="h-5 w-5 text-muted-foreground" />
