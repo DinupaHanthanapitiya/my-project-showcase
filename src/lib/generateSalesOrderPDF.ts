@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 interface SalesOrderData {
   orderNumber: string;
@@ -86,7 +86,7 @@ export function generateSalesOrderPDF(order: SalesOrderData) {
     item.remarks || "",
   ]);
 
-  (doc as any).autoTable({
+  autoTable(doc, {
     startY: tableStartY,
     head: tableHeaders,
     body: tableData,
