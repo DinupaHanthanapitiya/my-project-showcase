@@ -59,6 +59,46 @@ export default function Invoices() {
     });
   }, []);
 
+  const handleParseBulk = () => {
+    if (!bulkFile) { toast.error("Please select a file"); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result as string;
+        const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+        if (lines.length < 2) { toast.error("File must have a header row and at least one data row"); return; }
+        const header = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ""));
+        const styleIdx = header.findIndex(h => ["styleno", "style", "itemcode", "code", "sku"].includes(h));
+        const descIdx = header.findIndex(h => ["description", "desc", "name", "item"].includes(h));
+        const priceIdx = header.findIndex(h => ["unitprice", "price", "rate", "amount"].includes(h));
+        const qtyIdx = header.findIndex(h => ["quantity", "qty", "units"].includes(h));
+
+        const parsed: InvoiceItem[] = [];
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(",").map(c => c.trim());
+          const itemCode = styleIdx >= 0 ? cols[styleIdx] || "" : cols[0] || "";
+          const description = descIdx >= 0 ? cols[descIdx] || "" : cols[1] || "";
+          const price = Number(priceIdx >= 0 ? cols[priceIdx] : cols[2]) || 0;
+          const quantity = Number(qtyIdx >= 0 ? cols[qtyIdx] : 1) || 1;
+          parsed.push({ itemCode, description, quantity, branch: "Branch 1", price, total: quantity * price });
+        }
+        setBulkParsedItems(parsed);
+        toast.success(`Parsed ${parsed.length} items`);
+      } catch { toast.error("Failed to parse file"); }
+    };
+    reader.readAsText(bulkFile);
+  };
+
+  const handleImportItems = () => {
+    if (bulkParsedItems.length === 0) { toast.error("No items to import"); return; }
+    const nonEmpty = items.filter(i => i.itemCode || i.description);
+    setItems([...nonEmpty, ...bulkParsedItems]);
+    setBulkOpen(false);
+    setBulkFile(null);
+    setBulkParsedItems([]);
+    toast.success(`Imported ${bulkParsedItems.length} items`);
+  };
+
   const updateItem = (index: number, field: string, value: any) => {
     const newItems = [...items];
     (newItems[index] as any)[field] = value;
