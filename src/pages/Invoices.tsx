@@ -42,6 +42,7 @@ export default function Invoices() {
     toast.success("Style code added");
   };
 
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
