@@ -32,12 +32,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <div className="flex flex-col">
-              <span className="text-lg font-bold text-primary leading-tight">SEVINRO</span>
-              <span className="text-[9px] text-muted-foreground tracking-widest -mt-1">DISTRIBUTORS</span>
-            </div>
-          </div>
+          <Link to="/" className="flex items-center">
+            <img src={sevinroLogo} alt="Sevinro Distributors" className="h-10" />
+          </Link>
 
           <nav className="flex items-center gap-1">
             {navItems.map((item) => {
