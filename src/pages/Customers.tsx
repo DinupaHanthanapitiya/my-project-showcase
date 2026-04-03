@@ -314,7 +314,7 @@ export default function Customers() {
                         </TableCell>
                         <TableCell className="text-right">
                           <p className={`font-semibold ${customer.outstandingBalance > 0 ? "text-primary" : "text-foreground"}`}>
-                            Rs. {customer.outstandingBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                            LKR {customer.outstandingBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                           </p>
                           {customer.pendingInvoices.length > 0 && (
                             <p className="text-xs text-muted-foreground">{customer.pendingInvoices.length} pending</p>
