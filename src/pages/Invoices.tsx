@@ -50,6 +50,7 @@ export default function Invoices() {
   };
 
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
