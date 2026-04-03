@@ -27,6 +27,21 @@ interface Customer {
 }
 
 export default function Invoices() {
+  const [showStyleForm, setShowStyleForm] = useState(false);
+  const [newStyleCode, setNewStyleCode] = useState("");
+  const [newStyleDesc, setNewStyleDesc] = useState("");
+  const [newStylePrice, setNewStylePrice] = useState("");
+
+  const handleAddStyleCode = () => {
+    if (!newStyleCode || !newStyleDesc) { toast.error("Code and Description are required"); return; }
+    const price = Number(newStylePrice) || 0;
+    const nonEmpty = items.filter(i => i.itemCode || i.description);
+    setItems([...nonEmpty, { itemCode: newStyleCode, description: newStyleDesc, quantity: 1, branch: "Branch 1", price, total: price }]);
+    setNewStyleCode(""); setNewStyleDesc(""); setNewStylePrice("");
+    setShowStyleForm(false);
+    toast.success("Style code added");
+  };
+
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
@@ -176,7 +191,7 @@ export default function Invoices() {
               <div><CardTitle>Invoice Items</CardTitle><p className="text-sm text-muted-foreground">Add products and services</p></div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={() => setBulkOpen(true)}><Upload className="h-4 w-4 mr-1" /> Bulk Import</Button>
-                <Button variant="outline" size="sm">Add Item Code</Button>
+                <Button variant="outline" size="sm" onClick={() => setShowStyleForm(!showStyleForm)}><Plus className="h-4 w-4 mr-1" /> Add Item Code</Button>
                 <Button variant="outline" size="sm" onClick={addItem}><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
               </div>
             </div>
@@ -205,6 +220,26 @@ export default function Invoices() {
                 ))}
               </TableBody>
             </Table>
+            {showStyleForm && (
+              <div className="mt-4 rounded-md border bg-muted/30 p-4">
+                <p className="font-semibold mb-3">Add New Style Code</p>
+                <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-3 items-end">
+                  <div className="space-y-1">
+                    <Label>Code *</Label>
+                    <Input placeholder="e.g., AU001" value={newStyleCode} onChange={(e) => setNewStyleCode(e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Description *</Label>
+                    <Input placeholder="e.g., T Shirt" value={newStyleDesc} onChange={(e) => setNewStyleDesc(e.target.value)} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Price (RS) *</Label>
+                    <Input type="number" placeholder="0.00" value={newStylePrice} onChange={(e) => setNewStylePrice(e.target.value)} />
+                  </div>
+                  <Button onClick={handleAddStyleCode} className="bg-orange-500 hover:bg-orange-600 text-white px-8">Add Code</Button>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
