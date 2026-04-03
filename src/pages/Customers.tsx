@@ -49,7 +49,7 @@ export default function Customers() {
 
     const buildCustomers = () => {
       if (customersData === null) return;
-      const invoicesByCustomer: Record<string, { total: number; invoices: any[] }> = {};
+      const invoicesByCustomer: Record<string, { total: number; invoices: any[]; allInvoices: any[] }> = {};
 
       if (invoicesData) {
         Object.entries(invoicesData).forEach(([invId, inv]: [string, any]) => {
@@ -59,8 +59,10 @@ export default function Customers() {
           const paid = Number(inv.paidAmount || 0);
           const outstanding = amount - paid;
           if (!invoicesByCustomer[custName]) {
-            invoicesByCustomer[custName] = { total: 0, invoices: [] };
+            invoicesByCustomer[custName] = { total: 0, invoices: [], allInvoices: [] };
           }
+          // Store full invoice data for history
+          invoicesByCustomer[custName].allInvoices.push({ id: invId, ...inv });
           if (outstanding > 0) {
             invoicesByCustomer[custName].total += outstanding;
             invoicesByCustomer[custName].invoices.push({
