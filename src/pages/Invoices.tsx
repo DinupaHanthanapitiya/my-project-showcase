@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { db, ref, onValue, push, set } from "@/lib/firebase";
-import { ArrowLeft, Plus, Upload, Trash2 } from "lucide-react";
+import { ArrowLeft, Plus, Upload, Trash2, FileSpreadsheet } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -33,6 +34,10 @@ export default function Invoices() {
   const [branch, setBranch] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [items, setItems] = useState<InvoiceItem[]>([{ itemCode: "AU001", description: "", quantity: 0, branch: "Branch 1", price: 0, total: 0 }]);
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [bulkParsedItems, setBulkParsedItems] = useState<InvoiceItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +58,46 @@ export default function Invoices() {
       }
     });
   }, []);
+
+  const handleParseBulk = () => {
+    if (!bulkFile) { toast.error("Please select a file"); return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result as string;
+        const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+        if (lines.length < 2) { toast.error("File must have a header row and at least one data row"); return; }
+        const header = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/[^a-z0-9]/g, ""));
+        const styleIdx = header.findIndex(h => ["styleno", "style", "itemcode", "code", "sku"].includes(h));
+        const descIdx = header.findIndex(h => ["description", "desc", "name", "item"].includes(h));
+        const priceIdx = header.findIndex(h => ["unitprice", "price", "rate", "amount"].includes(h));
+        const qtyIdx = header.findIndex(h => ["quantity", "qty", "units"].includes(h));
+
+        const parsed: InvoiceItem[] = [];
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(",").map(c => c.trim());
+          const itemCode = styleIdx >= 0 ? cols[styleIdx] || "" : cols[0] || "";
+          const description = descIdx >= 0 ? cols[descIdx] || "" : cols[1] || "";
+          const price = Number(priceIdx >= 0 ? cols[priceIdx] : cols[2]) || 0;
+          const quantity = Number(qtyIdx >= 0 ? cols[qtyIdx] : 1) || 1;
+          parsed.push({ itemCode, description, quantity, branch: "Branch 1", price, total: quantity * price });
+        }
+        setBulkParsedItems(parsed);
+        toast.success(`Parsed ${parsed.length} items`);
+      } catch { toast.error("Failed to parse file"); }
+    };
+    reader.readAsText(bulkFile);
+  };
+
+  const handleImportItems = () => {
+    if (bulkParsedItems.length === 0) { toast.error("No items to import"); return; }
+    const nonEmpty = items.filter(i => i.itemCode || i.description);
+    setItems([...nonEmpty, ...bulkParsedItems]);
+    setBulkOpen(false);
+    setBulkFile(null);
+    setBulkParsedItems([]);
+    toast.success(`Imported ${bulkParsedItems.length} items`);
+  };
 
   const updateItem = (index: number, field: string, value: any) => {
     const newItems = [...items];
@@ -130,7 +175,7 @@ export default function Invoices() {
             <div className="flex items-center justify-between">
               <div><CardTitle>Invoice Items</CardTitle><p className="text-sm text-muted-foreground">Add products and services</p></div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm"><Upload className="h-4 w-4 mr-1" /> Bulk Import</Button>
+                <Button variant="outline" size="sm" onClick={() => setBulkOpen(true)}><Upload className="h-4 w-4 mr-1" /> Bulk Import</Button>
                 <Button variant="outline" size="sm">Add Item Code</Button>
                 <Button variant="outline" size="sm" onClick={addItem}><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
               </div>
@@ -167,6 +212,44 @@ export default function Invoices() {
           <Button variant="outline" onClick={() => navigate("/")}>Cancel</Button>
           <Button onClick={handleCreate}>Create Invoice</Button>
         </div>
+
+        <Dialog open={bulkOpen} onOpenChange={setBulkOpen}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Bulk Import Invoice Items</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 rounded-md border p-3">
+                <FileSpreadsheet className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Upload a CSV or Excel file with columns: Style No, Description, Unit Price. The system will intelligently detect column names regardless of format.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label>Select File</Label>
+                <div className="flex gap-2">
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv,.txt"
+                    onChange={(e) => { setBulkFile(e.target.files?.[0] || null); setBulkParsedItems([]); }}
+                    className="flex-1"
+                  />
+                  <Button variant="outline" onClick={handleParseBulk} disabled={!bulkFile}>
+                    <Upload className="h-4 w-4 mr-1" /> Parse
+                  </Button>
+                </div>
+              </div>
+              {bulkParsedItems.length > 0 && (
+                <p className="text-sm text-primary font-medium">{bulkParsedItems.length} items ready to import</p>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => { setBulkOpen(false); setBulkFile(null); setBulkParsedItems([]); }}>Cancel</Button>
+              <Button onClick={handleImportItems} disabled={bulkParsedItems.length === 0} className="bg-orange-400 hover:bg-orange-500 text-white">Import Items</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );
