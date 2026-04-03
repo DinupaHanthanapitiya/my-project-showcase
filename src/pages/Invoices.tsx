@@ -214,7 +214,7 @@ export default function Invoices() {
                     <TableCell><Input type="number" value={item.quantity || ""} onChange={(e) => updateItem(i, "quantity", Number(e.target.value))} className="w-20" /></TableCell>
                     <TableCell><Input value={item.branch} onChange={(e) => updateItem(i, "branch", e.target.value)} className="w-24" /></TableCell>
                     <TableCell><Input type="number" value={item.price || ""} onChange={(e) => updateItem(i, "price", Number(e.target.value))} className="w-24" /></TableCell>
-                    <TableCell className="font-medium"><TableCell className="font-medium">LKR {item.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell></TableCell>
+                    <TableCell className="font-medium">LKR {item.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}</TableCell>
                     <TableCell><Button variant="ghost" size="icon" onClick={() => removeItem(i)}><Trash2 className="h-4 w-4" /></Button></TableCell>
                   </TableRow>
                 ))}
