@@ -3,13 +3,14 @@ import { getDatabase, ref, get, set, push, update, remove, onValue, query, order
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || "https://sevinro-distributors-default-rtdb.firebaseio.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "sevinro-distributors",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+  apiKey: "AIzaSyBzTDTD2YN19kyE_BM-and62V2heGZbK5k",
+  authDomain: "sevinro-distributors.firebaseapp.com",
+  databaseURL: "https://sevinro-distributors-default-rtdb.firebaseio.com",
+  projectId: "sevinro-distributors",
+  storageBucket: "sevinro-distributors.firebasestorage.app",
+  messagingSenderId: "16376436724",
+  appId: "1:16376436724:web:deb83d6182bd0db2778ba1",
+  measurementId: "G-BYCTGFEY9V",
 };
 
 const app = initializeApp(firebaseConfig);
