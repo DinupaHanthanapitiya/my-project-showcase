@@ -9,9 +9,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { db, ref, onValue, push, set, update, remove } from "@/lib/firebase";
-import { Plus, Users, UserCheck, CreditCard, Search, Pencil, Trash2, Eye, EyeOff, Phone, Mail, MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Users, UserCheck, CreditCard, Search, Pencil, Trash2, Eye, EyeOff, Phone, Mail, MapPin, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/Layout";
+import InvoiceHistoryDialog from "@/components/InvoiceHistoryDialog";
 
 interface Customer {
   id: string;
@@ -23,6 +24,7 @@ interface Customer {
   isActive: boolean;
   outstandingBalance: number;
   pendingInvoices: any[];
+  allInvoices: any[];
 }
 
 const branchOptions = ["Branch 1", "Branch 2", "Branch 3", "Branch 4", "Branch 5", "Branch 6"];
@@ -36,6 +38,7 @@ export default function Customers() {
   const [filterActive, setFilterActive] = useState<"all" | "active" | "inactive">("all");
   const [form, setForm] = useState({ name: "", email: "", address: "", telephone: "", branches: [] as string[] });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [invoiceHistoryCustomer, setInvoiceHistoryCustomer] = useState<Customer | null>(null);
 
   useEffect(() => {
     const customersRef = ref(db, "customers");
@@ -46,7 +49,7 @@ export default function Customers() {
 
     const buildCustomers = () => {
       if (customersData === null) return;
-      const invoicesByCustomer: Record<string, { total: number; invoices: any[] }> = {};
+      const invoicesByCustomer: Record<string, { total: number; invoices: any[]; allInvoices: any[] }> = {};
 
       if (invoicesData) {
         Object.entries(invoicesData).forEach(([invId, inv]: [string, any]) => {
@@ -56,8 +59,10 @@ export default function Customers() {
           const paid = Number(inv.paidAmount || 0);
           const outstanding = amount - paid;
           if (!invoicesByCustomer[custName]) {
-            invoicesByCustomer[custName] = { total: 0, invoices: [] };
+            invoicesByCustomer[custName] = { total: 0, invoices: [], allInvoices: [] };
           }
+          // Store full invoice data for history
+          invoicesByCustomer[custName].allInvoices.push({ id: invId, ...inv });
           if (outstanding > 0) {
             invoicesByCustomer[custName].total += outstanding;
             invoicesByCustomer[custName].invoices.push({
@@ -72,7 +77,7 @@ export default function Customers() {
 
       const list = Object.entries(customersData).map(([id, val]: [string, any]) => {
         const custName = (val.name || "").toLowerCase().trim();
-        const invoiceInfo = invoicesByCustomer[custName] || { total: 0, invoices: [] };
+        const invoiceInfo = invoicesByCustomer[custName] || { total: 0, invoices: [], allInvoices: [] };
         return {
           id,
           name: val.name || "",
@@ -83,6 +88,7 @@ export default function Customers() {
           isActive: val.isActive !== false,
           outstandingBalance: invoiceInfo.total,
           pendingInvoices: invoiceInfo.invoices,
+          allInvoices: invoiceInfo.allInvoices,
         };
       });
       setCustomers(list);
@@ -316,6 +322,9 @@ export default function Customers() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" title="Invoice History" onClick={(e) => { e.stopPropagation(); setInvoiceHistoryCustomer(customer); }}>
+                              <FileText className="h-4 w-4 text-primary" />
+                            </Button>
                             <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); openEditDialog(customer); }}>
                               <Pencil className="h-4 w-4" />
                             </Button>
@@ -446,6 +455,14 @@ export default function Customers() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Invoice History Dialog */}
+      <InvoiceHistoryDialog
+        open={!!invoiceHistoryCustomer}
+        onOpenChange={(open) => { if (!open) setInvoiceHistoryCustomer(null); }}
+        customerName={invoiceHistoryCustomer?.name || ""}
+        invoices={invoiceHistoryCustomer?.allInvoices || []}
+      />
     </Layout>
   );
 }
