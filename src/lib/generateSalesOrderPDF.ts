@@ -66,7 +66,7 @@ export async function generateSalesOrderPDF(order: SalesOrderData) {
     String(item.quantity),
     item.branch || "",
     item.price > 0 ? item.price.toFixed(2) : "0.00",
-    `RS ${item.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+    `LKR ${item.total.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
     item.remarks || "",
   ]);
 
