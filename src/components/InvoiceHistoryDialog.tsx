@@ -66,8 +66,8 @@ export default function InvoiceHistoryDialog({ open, onOpenChange, customerName,
   };
 
   const formatAmount = (n: number) => {
-    const formatted = n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return `Rs. ${formatted}`;
+    const formatted = n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return `LKR ${formatted}`;
   };
 
   return (
